@@ -1,5 +1,7 @@
 #!/bin/bash
-
+#
+# Usage: ./createIndex.sh http://192.168.99.100:32806
+#
 curl -XPUT $1/mydouglas -d '
 {
     "settings" : {
