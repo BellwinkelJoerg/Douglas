@@ -1,5 +1,9 @@
 #!/usr/bin/perl
 
+#
+# Run using
+# ES_SERVER=http://192.168.99.100:32806 perl RunHTTPLog.pl '09/Apr/2017:20:21:22' '12/Apr/2017:20:28:29' access.log 10
+#
 use strict;
 use warnings;
 use Date::Parse;
@@ -17,7 +21,7 @@ sub input_intoES {
     
     my $number = shift;
 
-    system("curl -XPUT \'192.168.1.142:9200/mydouglas/logs/$number?pretty\' -d \'{ \"start_date\" : \"$StartTime\", \"end_date\" : \"$StopTime\", \"count_total\" : \"$#ArrayOfTime\", \"count_200\" : \"$#Response200\", \"percentage\" : \"$my_percentage\" }\'");
+    system("curl -XPUT \'$ENV{'ES_SERVER'}/mydouglas/logs/$number?pretty\' -d \'{ \"start_date\" : \"$StartTime\", \"end_date\" : \"$StopTime\", \"count_total\" : \"$#ArrayOfTime\", \"count_200\" : \"$#Response200\", \"percentage\" : \"$my_percentage\" }\'");
     
 }
 
@@ -80,8 +84,8 @@ sub calc_percentage {
 
 # get command line arguments (3)
 die "
-Usage: $0 '<START_TIME>' '<STOP_TIME>' <LOG_FILE> <ELASTICID>
-E.g.: $0 '09/Apr/2017:20:21:22' '09/Apr/2017:20:28:29' /var/log/httpd/access_log 10\n"
+Usage: ES_SERVER=http://192.168.99.100:32806 $0 '<START_TIME>' '<STOP_TIME>' <LOG_FILE> <ELASTICID>
+E.g.: ES_SERVER=http://192.168.99.100:32806 $0 '09/Apr/2017:20:21:22' '09/Apr/2017:20:28:29' /var/log/httpd/access_log 10\n"
 unless($#ARGV == 3);
 
 # make sure the log file exists

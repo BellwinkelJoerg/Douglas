@@ -1,6 +1,8 @@
 #!/bin/bash
-
-curl -XPUT $1:9200/mydouglas -d '
+#
+# Usage: ./createIndex.sh http://192.168.99.100:32806
+#
+curl -XPUT $1/mydouglas -d '
 {
     "settings" : {
         "index" : {
@@ -12,7 +14,7 @@ curl -XPUT $1:9200/mydouglas -d '
 '
 
 
-curl -XPUT $1:9200/mystackoverflow/_mapping/logs -d '
+curl -XPUT $1/mystackoverflow/_mapping/logs -d '
 {
     "properties": {
         "start_date": {
